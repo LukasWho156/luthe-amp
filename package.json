@@ -1,0 +1,60 @@
+{
+  "name": "luthe-amp",
+  "version": "0.1.3",
+  "description": "a framework for building js games",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib",
+    
+    "./lib/util/connect-ws": "./lib/util/connect-ws.js",
+    "./lib/util/create-ortho-cam": "./lib/util/create-ortho-cam.js",
+    "./lib/util/loading-system": "./lib/util/loading-system.js",
+    "./lib/util/monitor-memory": "./lib/util/monitor-memory.js",
+    "./lib/util/disposal-system": "./lib/util/disposal-system.js",
+
+    "./lib/audio/audio-manager": "./lib/audio/audio-manager.js",
+
+    "./lib/graphics/components/animation-component": "./lib/graphics/components/animation-component.js",
+    "./lib/graphics/components/fade-component": "./lib/graphics/components/fade-component.js",
+    "./lib/graphics/components/linear-transform-component": "./lib/graphics/components/linear-transform-component.js",
+    "./lib/graphics/components/particle": "./lib/graphics/components/particle.js",
+
+    "./lib/graphics/systems/animation-system": "./lib/graphics/systems/animation-system.js",
+    "./lib/graphics/systems/linear-transform-system": "./lib/graphics/systems/linear-transform-system.js",
+    "./lib/graphics/systems/particle-system": "./lib/graphics/systems/particle-system.js",
+
+    "./lib/graphics/utility/animated-font": "./lib/graphics/utility/animated-font.js",
+    "./lib/graphics/utility/classic-scene": "./lib/graphics/utility/classic-scene.js",
+    "./lib/graphics/utility/classic-sprite": "./lib/graphics/utility/classic-sprite.js",
+    "./lib/graphics/utility/sprite-2d": "./lib/graphics/utility/sprite-2d.js",
+    "./lib/graphics/utility/options-menu": "./lib/graphics/utility/options-menu.js",
+
+    "./lib/input/draggable": "./lib/input/draggable.js",
+    "./lib/input/keyboard-interaction-system": "./lib/input/keyboard-interaction-system.js",
+    "./lib/input/mouse-interaction-component": "./lib/input/mouse-interaction-component.js",
+    "./lib/input/mouse-interaction-system": "./lib/input/mouse-interaction-system.js",
+
+    "./lib/physics/physics-component": "./lib/physics/physics-component.js",
+    "./lib/physics/physics-system": "./lib/physics/physics-system.js",
+
+    "./lib/post-processing/extended-shader-pass": "./lib/post-processing/extended-shader-pass.js",
+    "./lib/post-processing/vignette-shader": "./lib/post-processing/vignette-shader.js",
+    "./lib/post-processing/noise-shader": "./lib/post-processing/noise-shader.js",
+    "./lib/post-processing/film-defect-shader": "./lib/post-processing/film-defect-shader.js",
+    "./lib/post-processing/cel-shader": "./lib/post-processing/cel-shader.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "LukasWho",
+  "license": "MIT",
+  "dependencies": {
+    "@types/three": "^0.146.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
+}
