@@ -66,7 +66,7 @@ class MouseInteractionSystem implements System {
         return this._raycaster.intersectObjects(this._object3ds, false)
     }
 
-    private _onMouseMoved = (event: MouseEvent) => {
+    private _onMouseMoved = (event: PointerEvent) => {
         if(!this._active) return;
         Game.renderer.domElement.style.cursor = 'default';
         const intersections = this._getIntersections(event);
@@ -87,7 +87,7 @@ class MouseInteractionSystem implements System {
         }
     }
 
-    private _onMouseDown = (event: MouseEvent) => {
+    private _onMouseDown = (event: PointerEvent) => {
         if(!this._active) return;
         const intersections = this._getIntersections(event);
         if(intersections.length > 0) {
@@ -107,7 +107,7 @@ class MouseInteractionSystem implements System {
         if(intersections.length > 0) {
             const component = this._components.find(comp => comp.object3d === intersections[0].object);
             if(component !== dragged) return;
-            component?.clicked(event);
+            component?.clicked(event, intersections[0]);
         }
         event.stopPropagation();
     }
@@ -117,12 +117,12 @@ class MouseInteractionSystem implements System {
         const intersections = this._getIntersections(event);
         if(intersections.length > 0) {
             const component = this._components.find(comp => comp.object3d === intersections[0].object);
-            component?.dblclicked(event);
+            component?.dblclicked(event, intersections[0]);
         }
         event.stopPropagation();
     }
 
-    private _onMouseUp = (event: MouseEvent) => {
+    private _onMouseUp = (event: PointerEvent) => {
         if(this._draggedObject) {
             this._draggedObject.dragEnd(event);
         }

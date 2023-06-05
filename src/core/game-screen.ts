@@ -2,6 +2,8 @@ import { Game } from './game.js';
 import { EffectComposer, Pass } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { System } from '../interfaces/system.js';
+import { ExtendedShaderPass } from '../post-processing/extended-shader-pass.js';
+import { NoopShader } from '../post-processing/noop-shader.js';
 
 /**
  * This class represents one screen of your game. It consists of two main ingredients:
@@ -25,6 +27,7 @@ class GameScreen {
     private _systems: System[];
     private _composer: EffectComposer;
     private _isFirstPass: boolean;
+    private _hasPostProcessingPass: boolean;
 
     /**
      * Create a basic screen. This method sets up the screen's system and pass lists.
@@ -33,6 +36,7 @@ class GameScreen {
         this._systems = [];
         this._composer = new EffectComposer(Game.renderer);
         this._isFirstPass = true;
+        this._hasPostProcessingPass = false;
     }
 
     /**
@@ -107,6 +111,7 @@ class GameScreen {
      */
     addPostProcessingPass(pass: Pass) {
         this._composer.addPass(pass);
+        this._hasPostProcessingPass = true;
     }
 
     /**
@@ -121,6 +126,11 @@ class GameScreen {
             if(typeof system.update === 'function') {
                 system.update(delta, globalTime);
             }
+        }
+        // ugly hack, but for some reason, having multiple render passes without
+        // any post-processing doesn't seem to work.
+        if(!this._hasPostProcessingPass) {
+            this.addPostProcessingPass(new ExtendedShaderPass(NoopShader));
         }
         Game.renderer.clear();
         this._composer.render(delta);

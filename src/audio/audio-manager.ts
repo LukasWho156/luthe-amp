@@ -253,11 +253,11 @@ class AudioManager {
         newTrack.node.disconnect();
         newTrack.node.connect(this._fadeInNode);
         if(!continueWhereLeft) newTrack.element.load();
-        newTrack.element.play().catch(e => {
+        this._currentTrack = newTrack;
+        return newTrack.element.play().catch(e => {
             //window.alert('Error playing sound: ' + e.message);
             setTimeout(() => newTrack?.element.play(), 50);
         });
-        this._currentTrack = newTrack;
     }
 
     private _pauseFade = (x: number, stepSize: number) => {
