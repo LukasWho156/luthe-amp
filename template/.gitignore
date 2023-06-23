@@ -1,0 +1,9 @@
+node_modules
+dist/*
+dev/*
+builds
+
+!dist/index.html
+!dist/styles.css
+!dev/index.html
+!dev/styles.css

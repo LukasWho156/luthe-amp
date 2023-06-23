@@ -8,7 +8,7 @@ import * as THREE from 'three';
  */
 class ExtendedShaderPass extends ShaderPass {
 
-    private _timeID: string;
+    private _timeId: string;
 
     /**
      * Create a new shader pass with the given parameters.
@@ -24,7 +24,7 @@ class ExtendedShaderPass extends ShaderPass {
     constructor(shader: THREE.Shader, initialUniforms?: any, textureID?: string, timeID?: string) {
         super(shader, textureID);
         if(initialUniforms) this._initUniforms(initialUniforms);
-        this._timeID = timeID ?? 'time';
+        this._timeId = timeID ?? 'time';
     }
 
     // initalize the uniforms given in the constructor.
@@ -40,8 +40,8 @@ class ExtendedShaderPass extends ShaderPass {
      * @override
      */
     render(renderer: THREE.WebGLRenderer, writeBuffer: any, readBuffer: any, deltaTime: number, maskActive: boolean) {
-        if(this.uniforms[this._timeID]) {
-            this.uniforms[this._timeID].value += deltaTime;
+        if(this.uniforms[this._timeId]) {
+            this.uniforms[this._timeId].value += deltaTime;
         }
         super.render(renderer, writeBuffer, readBuffer, deltaTime, maskActive);
     }
@@ -54,7 +54,7 @@ class ExtendedShaderPass extends ShaderPass {
      */
     setUniform(key: string, value: any) {
         if(!this.uniforms[key]) {
-            console.warn(`Can't find uniform ${key}`);
+            //console.warn(`Can't find uniform ${key}`);
             return;
         }
         this.uniforms[key].value = value;

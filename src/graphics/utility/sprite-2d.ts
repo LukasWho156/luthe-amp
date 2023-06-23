@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { Game, Texture2D } from "../../core/game.js";
+import { Handle, ISprite, SpriteConfiguration } from "./i-sprite.js";
 
-class Sprite2D extends THREE.Sprite {
+class Sprite2D extends THREE.Sprite implements ISprite {
 
     private _xFrames;
     private _yFrames;
@@ -89,19 +90,4 @@ class Sprite2D extends THREE.Sprite {
 
 }
 
-type Handle = THREE.Vector2 | string;
-
-type SpriteConfiguration = {
-    texture: Texture2D | string,
-    framesX?: number,
-    framesY?: number,
-    scaleX?: number,
-    scaleY?: number,
-    handle?: Handle,
-    rotation?: number,
-    x?: number,
-    y?: number,
-    z?: number,
-}
-
-export { Sprite2D, SpriteConfiguration, Handle };
+export { Sprite2D };

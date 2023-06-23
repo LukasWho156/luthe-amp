@@ -7,7 +7,8 @@ import { MouseInteractionComponent } from '../../input/mouse-interaction-compone
 import { MouseInteractionSystem } from '../../input/mouse-interaction-system.js';
 import { AnimationComponent } from '../components/animation-component.js';
 import { AnimatedString } from './animated-font.js';
-import { Handle, Sprite2D } from './sprite-2d.js';
+import { Sprite2D } from './sprite-2d.js';
+import { Handle } from './i-sprite.js';
 
 class OptionsMenu extends THREE.Group {
 

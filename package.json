@@ -27,6 +27,7 @@
     "./lib/graphics/utility/classic-scene": "./lib/graphics/utility/classic-scene.js",
     "./lib/graphics/utility/classic-sprite": "./lib/graphics/utility/classic-sprite.js",
     "./lib/graphics/utility/sprite-2d": "./lib/graphics/utility/sprite-2d.js",
+    "./lib/graphics/utility/shader-sprite": "./lib/graphics/utility/shader-sprite.js",
     "./lib/graphics/utility/options-menu": "./lib/graphics/utility/options-menu.js",
 
     "./lib/input/draggable": "./lib/input/draggable.js",
@@ -41,6 +42,7 @@
     "./lib/post-processing/vignette-shader": "./lib/post-processing/vignette-shader.js",
     "./lib/post-processing/noise-shader": "./lib/post-processing/noise-shader.js",
     "./lib/post-processing/film-defect-shader": "./lib/post-processing/film-defect-shader.js",
+    "./lib/post-processing/sprite-shader": "./lib/post-processing/sprite-shader.js",
     "./lib/post-processing/cel-shader": "./lib/post-processing/cel-shader.js"
   },
   "type": "module",
