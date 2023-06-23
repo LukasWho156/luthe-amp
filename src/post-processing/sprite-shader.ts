@@ -1,7 +1,13 @@
-const SpriteShader = {
+type UniformDefinitions = {
+    [key: string]: {value: any},
+}
+
+const SpriteShader = (uniforms: UniformDefinitions, shaderCode: string) => ({
     uniforms: {
         map: {value: null},
         frame: {value: [0, 0, 1, 1]},
+        pixelSize: {value: [0, 0]},
+        ...uniforms,
     },
     vertexShader:
 /* glsl */
@@ -23,14 +29,17 @@ const SpriteShader = {
 
     uniform sampler2D map;
     uniform vec4 frame;
+    uniform vec2 pixelSize;
+
+    ${shaderCode}
 
     void main() {
 
         vec2 frameUv = vec2(vUv.x * frame.z + frame.x, vUv.y * frame.a + frame.y);
-        gl_FragColor = texture(map, frameUv);
-        //gl_FragColor = vec4(frameUv.x, 0.0, frameUv.y, 1.0);
+        vec4 inputColor = texture(map, frameUv);
+        gl_FragColor = applyShader(inputColor, frameUv);
 
     }`
-}
+});
 
 export default SpriteShader;
