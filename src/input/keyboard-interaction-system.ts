@@ -36,7 +36,8 @@ class KeyboardInteractionSystem extends EventTarget {
             this._heldCommands[command]++;
             this.dispatchEvent(new CustomEvent<CommandInfo>('commanddown', { detail: {
                 command: command,
-                count: this._heldCommands[command]
+                count: this._heldCommands[command],
+                sourceEvent: event,
             }}));
         }
     }
@@ -49,7 +50,8 @@ class KeyboardInteractionSystem extends EventTarget {
             this._heldCommands[command]--;
             this.dispatchEvent(new CustomEvent<CommandInfo>('commandup', { detail: {
                 command: command,
-                count: this._heldCommands[command]
+                count: this._heldCommands[command],
+                sourceEvent: event,
             }}));
         }
     }
@@ -90,6 +92,7 @@ type CommandInfo = {
     command: string,
     /** How many keys corresponding to that command are currently pressed */
     count: number,
+    sourceEvent: KeyboardEvent,
 }
 
 export { KeyboardInteractionSystem, CommandInfo };

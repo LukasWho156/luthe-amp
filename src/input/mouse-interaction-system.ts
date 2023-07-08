@@ -50,6 +50,7 @@ class MouseInteractionSystem implements System {
         domElement.addEventListener('click', this._onClick);
         domElement.addEventListener('dblclick', this._onDblClick);
         domElement.addEventListener('pointerleave', this._onMouseUp);
+        domElement.addEventListener('contextmenu', this._onContextMenu);
         this._domElement = domElement;
     }
 
@@ -85,6 +86,17 @@ class MouseInteractionSystem implements System {
                 component.unhovered(event);
             }
         }
+    }
+
+    private _onContextMenu = (event: MouseEvent) => {
+        if(!this._active) return;
+        const intersections = this._getIntersections(event);
+        if(intersections.length > 0) {
+            const component = this._components.find(comp => comp.object3d === intersections[0].object);
+            component?.rightClicked(event, intersections[0]);
+        }
+        //this._mouseHeld = true;
+        event.stopPropagation();
     }
 
     private _onMouseDown = (event: PointerEvent) => {

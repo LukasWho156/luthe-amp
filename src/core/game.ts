@@ -2,6 +2,10 @@ import * as THREE from 'three';
 import { AudioManager, SoundConfiguration } from '../audio/audio-manager.js';
 import { GameScreen } from './game-screen.js';
 
+// @ts-ignore
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { Handle } from '../graphics/utility/i-sprite.js';
+
 /**
  * Define certain configuration variables for initializing the game.
  */
@@ -36,6 +40,7 @@ import { GameScreen } from './game-screen.js';
 type TextureSettings = {
     framesX?: number,
     framesY?: number,
+    handle?: Handle,
 }
 
 type Texture2D = {
@@ -80,6 +85,8 @@ type IGame = {
      */
     loadTexture: (file: string, id: string, settings?: TextureSettings) => Promise<Texture2D>,
 
+    loadModel: (file: string, id: string) => Promise<any>,
+
     /**
      * Load an audio file into the game's audio database.
      * 
@@ -118,6 +125,8 @@ type IGame = {
      */
     getTexture: (id: string) => Texture2D | null,
 
+    getModel: (id: string) => any,
+
     /**
      * Directly retrieve a texture's image. Used if you use classic sprites for any reason.
      * 
@@ -149,10 +158,14 @@ type IGame = {
      * @param config The game configuration.
      */
     init: (config: GameConfiguration) => void,
+
+    userData: any;
 }
 
 const _loader = new THREE.TextureLoader();
+const _modelLoader = new GLTFLoader();
 const _textureDB = new Map();
+const _modelDB = new Map();
 
 const _renderer = new THREE.WebGLRenderer();
 _renderer.autoClear = false;
@@ -236,6 +249,14 @@ const Game: IGame = {
         return promise.catch(e => window.alert(`can\'t load audio ${file}`));
     },
 
+    loadModel(file: string, id: string) {
+        const promise = _modelLoader.loadAsync(file).then((model: any) => {
+            _modelDB.set(id, model);
+            return model;
+        });
+        return promise;
+    },
+
     loadFromStorage(key: string) {
         try {
             const item = window.localStorage.getItem(key)
@@ -259,6 +280,10 @@ const Game: IGame = {
 
     getImage(id: string) {
         return _textureDB.get(id)?.texture.image;
+    },
+
+    getModel(id: string) {
+        return _modelDB.get(id);
     },
 
     setActiveScreen(screen: GameScreen) {
@@ -307,6 +332,8 @@ const Game: IGame = {
         }
         _inited = true;
     },
+
+    userData: {},
 
 }
 

@@ -43,6 +43,16 @@ class MouseInteractionComponent extends EventTarget {
         return true;
     }
 
+    rightClicked = (event: MouseEvent, intersection: THREE.Intersection) => {
+        this.dispatchEvent(new CustomEvent('rightclick', {detail: {
+            x: event.offsetX,
+            y: event.offsetY,
+            intersection: intersection,
+            originalEvent: event,
+        }}));
+        return true;
+    }
+
     dblclicked = (event: MouseEvent, intersection: THREE.Intersection) => {
         this.dispatchEvent(new CustomEvent('dblclick', {detail: {
             x: event.offsetX,

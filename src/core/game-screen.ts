@@ -24,19 +24,13 @@ import { NoopShader } from '../post-processing/noop-shader.js';
  */
 class GameScreen {
 
-    private _systems: System[];
-    private _composer: EffectComposer;
-    private _isFirstPass: boolean;
-    private _hasPostProcessingPass: boolean;
+    private _systems: {system: System, priority: number}[];
 
     /**
      * Create a basic screen. This method sets up the screen's system and pass lists.
      */
     constructor() {
         this._systems = [];
-        this._composer = new EffectComposer(Game.renderer);
-        this._isFirstPass = true;
-        this._hasPostProcessingPass = false;
     }
 
     /**
@@ -50,8 +44,9 @@ class GameScreen {
      * 
      * @param system 
      */
-    addSystem(system: System) {
-        this._systems.push(system);
+    addSystem(system: System, priority: number = 100) {
+        this._systems.push({system: system, priority: priority});
+        this._systems.sort((a, b) => a.priority - b.priority);
     }
 
     /**
@@ -66,7 +61,7 @@ class GameScreen {
      * @param callback.event The fired event
      */
     addListener(event: string, callback: (event: Event) => void) {
-        this._systems.push({
+        this.addSystem({
             mount: () => {
                 setTimeout(() => Game.renderer.domElement.addEventListener(event, callback));
             },
@@ -74,44 +69,6 @@ class GameScreen {
                 Game.renderer.domElement.removeEventListener(event, callback);
             }
         })
-    }
-
-    /**
-     * Add a render pass to the screen. This automatically adjusts the pass's
-     * .clear and .clearDepth value so that rendering multiple scenes on top
-     * of each other works, but if you still need to modify the created pass
-     * afterwards, use the return value.
-     * 
-     * @param scene The scene to render
-     * @param camera The camera to use for rendering
-     * @returns The created render pass
-     */
-    addRenderPass(scene: THREE.Scene, camera: THREE.Camera) {
-        const pass = new RenderPass(scene, camera);
-        if(this._isFirstPass) {
-            this._isFirstPass = false;
-            this._composer.addPass(pass);
-            return pass;
-        }
-        pass.clear = false;
-        pass.clearDepth = true;
-        this._composer.addPass(pass);
-        return pass;
-    }
-
-    /**
-     * Add a postprocessing pass to the scene.
-     * 
-     * Note that render passes and postprocessing passes share the same array,
-     * so if you want to make sure that postprocessing is done after all scenes
-     * have been rendered, only use this method after all render passes have
-     * been added.
-     * 
-     * @param pass The postprocessing pass
-     */
-    addPostProcessingPass(pass: Pass) {
-        this._composer.addPass(pass);
-        this._hasPostProcessingPass = true;
     }
 
     /**
@@ -123,17 +80,10 @@ class GameScreen {
      */
     update(delta: number, globalTime: number) {
         for(const system of this._systems) {
-            if(typeof system.update === 'function') {
-                system.update(delta, globalTime);
+            if(typeof system.system.update === 'function') {
+                system.system.update(delta, globalTime);
             }
         }
-        // ugly hack, but for some reason, having multiple render passes without
-        // any post-processing doesn't seem to work.
-        if(!this._hasPostProcessingPass) {
-            this.addPostProcessingPass(new ExtendedShaderPass(NoopShader));
-        }
-        Game.renderer.clear();
-        this._composer.render(delta);
     }
 
     /**
@@ -142,8 +92,8 @@ class GameScreen {
      */
     mount() {
         for(const system of this._systems) {
-            if(typeof system.mount === 'function') {
-                system.mount();
+            if(typeof system.system.mount === 'function') {
+                system.system.mount();
             }
         }
     }
@@ -154,8 +104,8 @@ class GameScreen {
      */
     unmount() {
         for(const system of this._systems) {
-            if(typeof system.unmount === 'function') {
-                system.unmount();
+            if(typeof system.system.unmount === 'function') {
+                system.system.unmount();
             }
         }
     }

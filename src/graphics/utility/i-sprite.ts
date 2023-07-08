@@ -12,6 +12,8 @@ type Handle = THREE.Vector2 | string;
 
 type SpriteConfiguration = {
     texture: Texture2D | string,
+    width?: number,
+    height?: number,
     framesX?: number,
     framesY?: number,
     scaleX?: number,

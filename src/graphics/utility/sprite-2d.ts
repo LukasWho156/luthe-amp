@@ -31,11 +31,11 @@ class Sprite2D extends THREE.Sprite implements ISprite {
         this._xFrames = config.framesX ?? tex.settings?.framesX ?? 1;
         this._yFrames = config.framesY ?? tex.settings?.framesY ?? 1;
         this.material.map.repeat.set(1 / this._xFrames, 1 / this._yFrames);
-        this._width = tex2d.image.width / this._xFrames;
-        this._height = tex2d.image.height / this._yFrames;
+        this._width = (config.width ?? tex2d.image.width) / this._xFrames;
+        this._height = (config.height ?? tex2d.image.height) / this._yFrames;
         this._scale = new THREE.Vector2(1, 1);
         this.setScale(config.scaleX ?? 1, config.scaleY ?? 1);
-        this.setHandle(config.handle ?? 'center');
+        this.setHandle(config.handle ?? tex.settings?.handle ?? 'center');
         this.setRotation(config.rotation ?? 0)
         this.setPosition(config.x ?? 0, config.y ?? 0, config.z ?? 0);
         this.setFrame(0);
