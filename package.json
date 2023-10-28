@@ -28,6 +28,7 @@
     "./lib/graphics/utility/options-menu": "./lib/graphics/utility/options-menu.js",
     "./lib/input/draggable": "./lib/input/draggable.js",
     "./lib/input/keyboard-interaction-system": "./lib/input/keyboard-interaction-system.js",
+    "./lib/input/gamepad-interaction-system": "./lib/input/gamepad-interaction-system.js",
     "./lib/input/mouse-interaction-component": "./lib/input/mouse-interaction-component.js",
     "./lib/input/mouse-interaction-system": "./lib/input/mouse-interaction-system.js",
     "./lib/physics/physics-component": "./lib/physics/physics-component.js",
@@ -49,7 +50,8 @@
   "author": "LukasWho",
   "license": "MIT",
   "dependencies": {
-    "@types/three": "^0.152.1"
+    "@types/three": "^0.152.1",
+    "three": "^0.154.0"
   },
   "devDependencies": {
     "typescript": "^4.9.3"

@@ -11,6 +11,7 @@ class KeyboardInteractionSystem extends EventTarget {
     private _mapping: any;
     private _domElement: HTMLElement;
     private _heldCommands: any;
+    private _heldKeys: any;
 
     /**
      * Create a new Keyboard Interaction system with the given parameters.
@@ -25,15 +26,19 @@ class KeyboardInteractionSystem extends EventTarget {
         this._mapping = mapping;
         this._domElement = domElement;
         this._heldCommands = {};
+        this._heldKeys = {};
     }
 
     // handle native keydown events
     private _onKeyDown = (event: KeyboardEvent) => {
         event.preventDefault();
-        if(event.repeat) return;
+        if(event.repeat || this._heldKeys[event.code]) return;
+        this._heldKeys[event.code] = true;
         const command = this._mapping[event.code];
         if(command) {
             this._heldCommands[command]++;
+            //console.log('down', command, this._heldCommands[command]);
+            if(this._heldCommands[command] > 1) console.log(event);
             this.dispatchEvent(new CustomEvent<CommandInfo>('commanddown', { detail: {
                 command: command,
                 count: this._heldCommands[command],
@@ -45,9 +50,12 @@ class KeyboardInteractionSystem extends EventTarget {
     // handle native keyup events
     private _onKeyUp = (event: KeyboardEvent) => {
         event.preventDefault();
+        this._heldKeys[event.code] = false;
         const command = this._mapping[event.code];
         if(command) {
             this._heldCommands[command]--;
+            if(this._heldCommands[command] < 0) this._heldCommands[command] = 0;
+            //console.log('up', command, this._heldCommands[command]);
             this.dispatchEvent(new CustomEvent<CommandInfo>('commandup', { detail: {
                 command: command,
                 count: this._heldCommands[command],

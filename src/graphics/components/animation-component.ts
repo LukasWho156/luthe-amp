@@ -1,4 +1,5 @@
 import { SimpleComponent } from "../../interfaces/simple-component.js";
+import { ISprite } from "../utility/i-sprite.js";
 import { Sprite2D } from "../utility/sprite-2d.js";
 
 class AnimationComponent implements SimpleComponent {
@@ -9,7 +10,7 @@ class AnimationComponent implements SimpleComponent {
     private _animations;
     private _animationState: AnimationState;
 
-    constructor(entity: any, sprite: Sprite2D) {
+    constructor(entity: any, sprite: ISprite) {
         this._entity = entity;
         this._sprite = sprite;
         this._animations = new Map();

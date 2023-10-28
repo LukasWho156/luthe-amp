@@ -64,7 +64,13 @@ class MouseInteractionSystem implements System {
         this._pointer.x = (event.offsetX / this._width) * 2 - 1;
         this._pointer.y = -(event.offsetY / this._height) * 2 + 1;
         this._raycaster.setFromCamera(this._pointer, this._camera);
-        return this._raycaster.intersectObjects(this._object3ds, false)
+        const intersections = this._raycaster.intersectObjects(this._object3ds, false).filter(inter => {
+            if(typeof(inter.object.userData.customCollider) !== 'function') {
+                return true;
+            }
+            return inter.object.userData.customCollider(inter.uv?.x, inter.uv?.y);
+        });
+        return intersections;
     }
 
     private _onMouseMoved = (event: PointerEvent) => {
@@ -101,6 +107,7 @@ class MouseInteractionSystem implements System {
 
     private _onMouseDown = (event: PointerEvent) => {
         if(!this._active) return;
+        if(event.button !== 0) return;
         const intersections = this._getIntersections(event);
         if(intersections.length > 0) {
             const component = this._components.find(comp => comp.object3d === intersections[0].object);

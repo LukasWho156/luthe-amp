@@ -76,6 +76,8 @@ type IGame = {
      */
     readonly audio: AudioManager,
 
+    readonly overlay: HTMLElement,
+
     /**
      * Load an image into the game's texture database.
      * 
@@ -171,6 +173,8 @@ const _renderer = new THREE.WebGLRenderer();
 _renderer.autoClear = false;
 const _audio = AudioManager.instance;
 
+let _overlay: HTMLElement;
+
 let _container: HTMLElement;
 
 let _width = 0;
@@ -193,12 +197,26 @@ function _setSize(width: number, height: number) {
     _renderer.setSize(width, height);
 }
 
+let _errorCount = 0;
+
 // main game loop
 function _run(time: number) {
     const delta = (_lastTime > 0) ? Math.min(time - _lastTime, _maxFrameDuration) : 0;
     _lastTime = time;
-    _activeScreen?.update(delta, time);
-    requestAnimationFrame(_run);
+    try {
+        _activeScreen?.update(delta, time);
+        _errorCount = 0;
+    } catch(e) {
+        console.error('Error in main game loop:', e);
+        _errorCount++;
+    }
+    if(_errorCount >= 5) {
+        console.error('Too many consecutive errors, unmounting current screen');
+        _activeScreen.unmount();
+        _started = false;
+    } else {
+        requestAnimationFrame(_run);
+    }
 }
 
 // append the html5 canvas to the given container
@@ -210,12 +228,22 @@ function _appendTo(container: HTMLElement | null) {
     container.append(_renderer.domElement);
     _renderer.domElement.tabIndex = 0;
     _renderer.domElement.addEventListener('keydown', (e: Event) => e.preventDefault());
+    _overlay = document.createElement('div');
+    _overlay.style.position = 'absolute';
+    _overlay.style.width = `${Game.width}px`;
+    _overlay.style.height = `${Game.height}px`;
+    _overlay.style.zIndex = '100';
+    _overlay.style.opacity = '0';
+    _overlay.style.pointerEvents = 'none';
+    _overlay.addEventListener('keydown', (e: Event) => e.preventDefault());
+    container.append(_overlay);
 }
 
 // set the canvas size as big as possible while still fitting the window.
 function _resize() {
     const scale = Math.min(_container.clientWidth / _width, _container.clientHeight / _height);
     _renderer.domElement.style.transform = `scale(${scale})`;
+    _overlay.style.transform = `scale(${scale})`;
 }
 
 /**
@@ -231,6 +259,7 @@ const Game: IGame = {
     get height() { return _height; },
     get renderer() { return _renderer },
     get audio() { return _audio },
+    get overlay() { return _overlay },
 
     loadTexture(file: string, id: string, settings?: TextureSettings) {
         const promise = _loader.loadAsync(file).then((tex: THREE.Texture) => {
