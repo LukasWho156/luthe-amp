@@ -1,6 +1,6 @@
 {
-  "name": "bogglemon",
-  "version": "1.0.0",
+  "name": "luthe-amp-game",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -11,6 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "luthe-amp": "file:../luthe-amp-ts"
+    "luthe-amp": "git://github.com/LukasWho156/luthe-amp#v0.4"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.5.1"
   }
 }
