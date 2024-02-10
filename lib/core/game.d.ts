@@ -28,7 +28,7 @@ type GameConfiguration = {
     autoResize?: boolean;
     /**
      * If this is not set to true, the game will mute all audio playback when
-     * the window loses focus.
+     * the window loses focus. Default false.
      */
     backgroundAudioPlayback?: boolean;
 };

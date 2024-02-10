@@ -6,7 +6,7 @@ declare class RenderSystem implements System {
     private _composer;
     private _isFirstPass;
     private _hasPostProcessingPass;
-    constructor();
+    constructor(renderTarget?: THREE.WebGLRenderTarget);
     /**
      * Add a render pass to the screen. This automatically adjusts the pass's
      * .clear and .clearDepth value so that rendering multiple scenes on top

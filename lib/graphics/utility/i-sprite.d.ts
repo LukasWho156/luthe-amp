@@ -1,3 +1,4 @@
+import { SpriteMaterial } from "three";
 import { Texture2D } from "../../index.js";
 interface ISprite {
     setScale(scaleX: number, scaleY?: number): void;
@@ -8,6 +9,7 @@ interface ISprite {
 }
 type Handle = THREE.Vector2 | string;
 type SpriteConfiguration = {
+    material?: SpriteMaterial;
     texture: Texture2D | string;
     width?: number;
     height?: number;

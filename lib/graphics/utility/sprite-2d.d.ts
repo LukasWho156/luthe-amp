@@ -18,6 +18,15 @@ declare class Sprite2D extends THREE.Sprite implements ISprite {
     get width(): number;
     get height(): number;
     constructor(config: SpriteConfiguration);
+    /**
+     * make sure to update the sprite's material according to the sprite's frame,
+     * rotation, opacity, color and blending mode.
+     *
+     * mostly used to make it possible for multiple sprites to share the same
+     * texture or material.
+     *
+     * @override
+     */
     onBeforeRender: () => void;
     setScale(scaleX: number, scaleY?: number): void;
     setPosition(x: number, y: number, z: number): void;
