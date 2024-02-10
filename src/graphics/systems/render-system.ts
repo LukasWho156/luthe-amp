@@ -11,8 +11,8 @@ class RenderSystem implements System {
     private _isFirstPass: boolean;
     private _hasPostProcessingPass: boolean;
 
-    constructor() {
-        this._composer = new EffectComposer(Game.renderer);
+    constructor(renderTarget?: THREE.WebGLRenderTarget) {
+        this._composer = new EffectComposer(Game.renderer, renderTarget);
         this._isFirstPass = true;
         this._hasPostProcessingPass = false;
     }
