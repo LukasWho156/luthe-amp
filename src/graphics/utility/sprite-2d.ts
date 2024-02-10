@@ -12,6 +12,13 @@ class Sprite2D extends THREE.Sprite implements ISprite {
     private _scale;
     private _frame;
 
+    public repeat: THREE.Vector2 = new THREE.Vector2();
+    public offset: THREE.Vector2 = new THREE.Vector2();
+    public _rotation: number = 0;
+    public opacity = 1;
+    public color = new THREE.Color(0xffffff);
+    public blending = THREE.NormalBlending;
+
     public static invertYPosition: boolean = false;
 
     get width() {
@@ -23,21 +30,21 @@ class Sprite2D extends THREE.Sprite implements ISprite {
     }
 
     constructor(config: SpriteConfiguration) {
-        super();
+        super(config.material);
         this._frame = 0;
         const tex = (typeof config.texture === 'string') ? Game.getTexture(config.texture) : config.texture;
         if(!tex) {
             throw new Error("Texture doesn't exist");
         }
         const tex2d = tex.texture;
+        this.material.map ??= tex2d;
         if(config.options?.collider === 'pixel') {
             const collider = new PixelCollider(tex2d.image);
             this.userData.customCollider = (u: number, v: number) => this.pixelCollide(u, v, collider);
         }
-        this.material.map = tex2d.clone();
         this._xFrames = config.framesX ?? tex.settings?.framesX ?? 1;
         this._yFrames = config.framesY ?? tex.settings?.framesY ?? 1;
-        this.material.map.repeat.set(1 / this._xFrames, 1 / this._yFrames);
+        this.repeat.set(1 / this._xFrames, 1 / this._yFrames);
         this._width = (config.width ?? tex2d.image.width) / this._xFrames;
         this._height = (config.height ?? tex2d.image.height) / this._yFrames;
         this._scale = new THREE.Vector2(1, 1);
@@ -46,6 +53,24 @@ class Sprite2D extends THREE.Sprite implements ISprite {
         this.setRotation(config.rotation ?? 0)
         this.setPosition(config.x ?? 0, config.y ?? 0, config.z ?? 0);
         this.setFrame(0);
+    }
+
+    /**
+     * make sure to update the sprite's material according to the sprite's frame,
+     * rotation, opacity, color and blending mode.
+     * 
+     * mostly used to make it possible for multiple sprites to share the same
+     * texture or material.
+     * 
+     * @override
+     */
+    onBeforeRender = () => {
+        this.material.map?.repeat.copy(this.repeat);
+        this.material.map?.offset.copy(this.offset);
+        this.material.rotation = this._rotation;
+        this.material.opacity = this.opacity;
+        this.material.color.copy(this.color);
+        this.material.blending = this.blending;
     }
 
     setScale(scaleX: number, scaleY?: number) {
@@ -73,12 +98,12 @@ class Sprite2D extends THREE.Sprite implements ISprite {
     setFrame(i: number) {
         if(i < 0 || i > this._xFrames * this._yFrames) return;
         this._frame = i;
-        this.material.map?.offset.set((1 / this._xFrames) * (i % this._xFrames),
+        this.offset.set((1 / this._xFrames) * (i % this._xFrames),
             (1 / this._yFrames) * (this._yFrames - Math.floor(i / this._xFrames) - 1));
     }
 
     setRotation(angle: number) {
-        this.material.rotation = angle;
+        this._rotation = angle;
     }
 
     setHandle(handle: Handle) {
@@ -101,7 +126,6 @@ class Sprite2D extends THREE.Sprite implements ISprite {
     }
 
     dispose() {
-        this.material.map?.dispose();
         this.material.dispose();
         this.geometry.dispose();
     }
