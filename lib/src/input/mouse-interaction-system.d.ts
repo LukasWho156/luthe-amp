@@ -1,0 +1,30 @@
+import * as THREE from 'three';
+import { System } from '../interfaces/system.js';
+import { MouseInteractionComponent } from './mouse-interaction-component.js';
+declare class MouseInteractionSystem implements System {
+    private _width;
+    private _height;
+    private _camera;
+    private _raycaster;
+    private _components;
+    private _object3ds;
+    private _pointer;
+    private _mouseHeld?;
+    private _draggedObject?;
+    private _active;
+    private _domElement;
+    get active(): boolean;
+    set active(value: boolean);
+    get mouseHeld(): boolean | undefined;
+    constructor(width: number, height: number, camera: THREE.Camera, domElement: HTMLElement);
+    add(component: MouseInteractionComponent): void;
+    private _getIntersections;
+    private _onMouseMoved;
+    private _onMouseDown;
+    private _onClick;
+    private _onDblClick;
+    private _onMouseUp;
+    mount(): void;
+    unmount(): void;
+}
+export { MouseInteractionSystem };
