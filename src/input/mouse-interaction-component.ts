@@ -33,6 +33,15 @@ class MouseInteractionComponent extends EventTarget {
         return true;
     }
 
+    draggedOnto = (event?: PointerEvent) => {
+        if(this._entity.hovered) return;
+        this._entity.hovered = true;
+        this.dispatchEvent(new CustomEvent('draggedOnto', { detail: {
+            originalEvent: event,
+        }}));
+        return true;
+    }
+
     clicked = (event: MouseEvent, intersection: THREE.Intersection) => {
         this.dispatchEvent(new CustomEvent('click', {detail: {
             x: event.offsetX,

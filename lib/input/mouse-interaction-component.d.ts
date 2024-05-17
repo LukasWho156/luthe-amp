@@ -7,6 +7,7 @@ declare class MouseInteractionComponent extends EventTarget {
     constructor(entity: any, object3d: THREE.Object3D);
     hovered: (event: PointerEvent) => true | undefined;
     unhovered: (event?: PointerEvent) => true | undefined;
+    draggedOnto: (event?: PointerEvent) => true | undefined;
     clicked: (event: MouseEvent, intersection: THREE.Intersection) => boolean;
     rightClicked: (event: MouseEvent, intersection: THREE.Intersection) => boolean;
     dblclicked: (event: MouseEvent, intersection: THREE.Intersection) => boolean;

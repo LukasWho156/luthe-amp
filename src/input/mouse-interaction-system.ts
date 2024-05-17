@@ -82,6 +82,11 @@ class MouseInteractionSystem implements System {
                 const intersection = intersections.find(i => i.object === this._draggedObject?.object3d);
                 this._draggedObject.dragged(event, intersection);
             }
+            for(const component of this._components) {
+                if(intersections.find(i => i.object === component.object3d)) {
+                    component.draggedOnto(event);
+                }
+            }
             return;
         }
         for(const component of this._components) {
