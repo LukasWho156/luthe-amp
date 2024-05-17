@@ -1,6 +1,6 @@
 {
   "name": "luthe-amp",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "a framework for building js games",
   "main": "lib/index.js",
   "exports": {
@@ -33,6 +33,7 @@
     "./lib/input/mouse-interaction-system": "./lib/input/mouse-interaction-system.js",
     "./lib/physics/physics-component": "./lib/physics/physics-component.js",
     "./lib/physics/physics-system": "./lib/physics/physics-system.js",
+    "./lib/post-processing/noop-shader": "./lib/post-processing/noop-shader.js",
     "./lib/post-processing/fxaa-shader": "./lib/post-processing/fxaa-shader.js",
     "./lib/post-processing/extended-shader-pass": "./lib/post-processing/extended-shader-pass.js",
     "./lib/post-processing/vignette-shader": "./lib/post-processing/vignette-shader.js",
