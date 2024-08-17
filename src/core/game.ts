@@ -87,6 +87,8 @@ type IGame = {
      */
     loadTexture: (file: string, id: string, settings?: TextureSettings) => Promise<Texture2D>,
 
+    unloadTexture: (id: string) => boolean,
+
     loadModel: (file: string, id: string) => Promise<any>,
 
     /**
@@ -271,6 +273,14 @@ const Game: IGame = {
             return tex2d;
         });
         return promise;
+    },
+
+    unloadTexture(id: string) {
+        const texture = _textureDB.get(id);
+        if(!texture) return false;
+        texture.texture.dispose();
+        _textureDB.set(id, null);
+        return true;
     },
 
     loadSound(file: string, config: SoundConfiguration) {

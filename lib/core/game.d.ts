@@ -73,6 +73,7 @@ type IGame = {
      * @returns A promise that resolves once the texture has been loaded.
      */
     loadTexture: (file: string, id: string, settings?: TextureSettings) => Promise<Texture2D>;
+    unloadTexture: (id: string) => boolean;
     loadModel: (file: string, id: string) => Promise<any>;
     /**
      * Load an audio file into the game's audio database.
