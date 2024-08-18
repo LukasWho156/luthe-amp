@@ -2,6 +2,9 @@ import * as THREE from 'three';
 declare class MouseInteractionComponent extends EventTarget {
     private _entity;
     private _object3d;
+    private _active;
+    set active(value: boolean);
+    get active(): boolean;
     get entity(): any;
     get object3d(): THREE.Object3D<THREE.Event>;
     constructor(entity: any, object3d: THREE.Object3D);

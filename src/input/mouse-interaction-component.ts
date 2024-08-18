@@ -5,6 +5,15 @@ class MouseInteractionComponent extends EventTarget {
     private _entity;
     private _object3d;
 
+    private _active = true;
+    set active(value: boolean) {
+        this._active = value;
+        this._object3d.userData.ignoreCollisions = !value;
+    }
+    get active() {
+        return this._active;
+    }
+
     get entity() {
         return this._entity;
     }

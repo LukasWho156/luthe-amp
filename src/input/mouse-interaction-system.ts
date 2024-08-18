@@ -65,6 +65,9 @@ class MouseInteractionSystem implements System {
         this._pointer.y = -(event.offsetY / this._height) * 2 + 1;
         this._raycaster.setFromCamera(this._pointer, this._camera);
         const intersections = this._raycaster.intersectObjects(this._object3ds, false).filter(inter => {
+            if(inter.object.userData.ignoreCollisions) {
+                return false;
+            }
             if(typeof(inter.object.userData.customCollider) !== 'function') {
                 return true;
             }
