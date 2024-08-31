@@ -36,7 +36,7 @@ const SpriteShader = (uniforms: UniformDefinitions, shaderCode: string) => ({
     void main() {
 
         vec2 frameUv = vec2(vUv.x * frame.z + frame.x, vUv.y * frame.a + frame.y);
-        vec4 inputColor = texture(map, frameUv);
+        vec4 inputColor = texture2D(map, frameUv);
         gl_FragColor = applyShader(inputColor, frameUv);
 
     }`
