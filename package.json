@@ -1,6 +1,6 @@
 {
   "name": "luthe-amp",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "a framework for building js games",
   "main": "lib/index.js",
   "exports": {
@@ -51,8 +51,7 @@
   "author": "LukasWho",
   "license": "MIT",
   "dependencies": {
-    "@types/three": "^0.152.1",
-    "three": "^0.154.0"
+    "@types/three": "^0.152.1"
   },
   "devDependencies": {
     "typescript": "^4.9.3"

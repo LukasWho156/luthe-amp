@@ -4,6 +4,8 @@ import { MouseInteractionComponent } from './mouse-interaction-component.js';
 declare class MouseInteractionSystem implements System {
     private _width;
     private _height;
+    private _offsetX;
+    private _offsetY;
     private _camera;
     private _raycaster;
     private _components;
@@ -16,7 +18,7 @@ declare class MouseInteractionSystem implements System {
     get active(): boolean;
     set active(value: boolean);
     get mouseHeld(): boolean | undefined;
-    constructor(width: number, height: number, camera: THREE.Camera, domElement: HTMLElement);
+    constructor(width: number, height: number, camera: THREE.Camera, domElement: HTMLElement, offsetX?: number, offsetY?: number);
     add: (component: MouseInteractionComponent) => void;
     private _getIntersections;
     private _onMouseMoved;

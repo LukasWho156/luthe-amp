@@ -7,6 +7,9 @@ class MouseInteractionSystem implements System {
 
     private _width;
     private _height;
+    private _offsetX;
+    private _offsetY;
+
     private _camera;
     private _raycaster;
 
@@ -35,9 +38,11 @@ class MouseInteractionSystem implements System {
         return this._mouseHeld;
     }
 
-    constructor(width: number, height: number, camera: THREE.Camera, domElement: HTMLElement) {
+    constructor(width: number, height: number, camera: THREE.Camera, domElement: HTMLElement, offsetX: number = 0, offsetY: number = 0) {
         this._width = width;
         this._height = height;
+        this._offsetX = offsetX;
+        this._offsetY = offsetY;
         this._camera = camera;
         this._raycaster = new THREE.Raycaster();
         this._components = [];
@@ -61,8 +66,8 @@ class MouseInteractionSystem implements System {
 
     private _getIntersections = (event: MouseEvent) => {
         this._raycaster.layers = this._camera.layers;
-        this._pointer.x = (event.offsetX / this._width) * 2 - 1;
-        this._pointer.y = -(event.offsetY / this._height) * 2 + 1;
+        this._pointer.x = ((event.offsetX - this._offsetX) / this._width) * 2 - 1;
+        this._pointer.y = ((this._offsetY - event.offsetY) / this._height) * 2 + 1;
         this._raycaster.setFromCamera(this._pointer, this._camera);
         const intersections = this._raycaster.intersectObjects(this._object3ds, false).filter(inter => {
             if(inter.object.userData.ignoreCollisions) {

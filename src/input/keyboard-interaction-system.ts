@@ -78,6 +78,9 @@ class KeyboardInteractionSystem extends EventTarget {
      * Called by the active screen when it mounts. No need to call manually.
      */
     mount() {
+        for(const key in this._heldKeys) {
+            this._heldKeys[key] = false;
+        }
         for(const command of Object.values(this._mapping)) {
             this._heldCommands[(command as string)] = 0;
         }
